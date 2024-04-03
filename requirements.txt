@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+dvc
+dvc-s3
+dvclive
+awscli
+python-dotenv
+psycopg2-binary
+scikit-learn
