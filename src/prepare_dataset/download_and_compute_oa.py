@@ -147,7 +147,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download the dataset of XS base on the sensor history in xsdb')
     parser.add_argument('--category', '-c', type=str, default='acc', help='Value for download the specific category of data')
     parser.add_argument('--site', '-s', type=str, default='emsd2_tswh', help='Value for download the dataset of related site')
-    parser.add_argument('--path', '-p', type=str, default=None, help='Specify the path to download the dataset')
+    parser.add_argument('--ext_path', '-p', type=str, default=None, help='Specify the path to download the dataset')
     args = parser.parse_args()
     download_xs_s3_dataset(category=args.category, site=args.site, ext_path=args.ext_path)
     compute_oa(category=args.category, site=args.site, ext_path=args.ext_path)

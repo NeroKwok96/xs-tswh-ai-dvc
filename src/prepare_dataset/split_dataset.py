@@ -147,6 +147,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Split dataset into On, Off, Evaluate.')
     parser.add_argument('--category', '-c', type=str, default='acc', help='Value for process the specific category of data')
     parser.add_argument('--site', '-s', type=str, default='emsd2_tswh', help='Value for process the specific site of data')
-    parser.add_argument('--path', '-p', type=str, default=None, help='Specify the path to download the dataset')
+    parser.add_argument('--ext_path', '-p', type=str, default=None, help='Specify the path to download the dataset')
     args = parser.parse_args()
     split_dataset(category=args.category, site=args.site, ext_path=args.ext_path)
