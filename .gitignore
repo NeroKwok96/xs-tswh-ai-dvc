@@ -13,16 +13,17 @@ dvclive/
 # dvc.lock
 
 # Dataset
-acc_data
-acc_data_off
-acc_data_evaluate
-vel_data
-vel_data_off
-vel_data_evaluate
-gE_data
-gE_data_off
-gE_data_evaluate
-dataset
+# acc_data
+# acc_data_off
+# acc_data_evaluate
+# vel_data
+# vel_data_off
+# vel_data_evaluate
+# gE_data
+# gE_data_off
+# gE_data_evaluate
+# dataset
+data
 train_data
 data_off
 clustering_result
