@@ -2,17 +2,17 @@ outs:
 - hash: md5
   path: data
   files:
-  - relpath: data.xml
+  - relpath: test_dvc/data.xml
     md5: 22a1a2931c8370d3aeedd7183606fd7f
     size: 14445097
     cloud:
       myremote:
         etag: 22a1a2931c8370d3aeedd7183606fd7f
-        version_id: 6ZU4s.9qaFEKS1h4H_eekyKd0ljkZ13g
-  - relpath: test.md
+        version_id: 7HHkyqDv5tLrxg_GLvSi9q0WUcgt.LXi
+  - relpath: test_dvc/test.md
     md5: 5eb63bbbe01eeed093cb22bb8f5acdc3
     size: 11
     cloud:
       myremote:
         etag: 5eb63bbbe01eeed093cb22bb8f5acdc3
-        version_id: 80rlYX27ZRk98yS8Cl7Yk6ljSypxpn38
+        version_id: wmpT_Sl7ozNjxggI9W0QMAiTJdbQ6P4B
