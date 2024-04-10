@@ -1,7 +1,7 @@
 numpy
 pandas
 matplotlib
-dvc
+dvc==3.38
 dvc-s3
 dvclive
 awscli
