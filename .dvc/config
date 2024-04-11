@@ -2,7 +2,5 @@
     remote = tswh_bearing
 ['remote "myremote"']
     url = s3://xs-ai-tswh-dataset
-    version_aware = true
 ['remote "tswh_bearing"']
     url = s3://xs-ai-tswh-dataset/tswh/bearing
-    version_aware = true
