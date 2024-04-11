@@ -24,7 +24,7 @@ dvclive/
 # gE_data_evaluate
 # dataset
 data
-train_data
+# train_data
 data_off
 clustering_result
 bearing_fault_dataset
