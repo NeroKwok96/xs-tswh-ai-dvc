@@ -50,6 +50,11 @@ def split_dataset(category: str, site: str, ext_path: str = None):
             "machine_name": "5A ISO Rm 2 Fan no.1",
             "machine_type": "Motor",
             "date_range": ("20231201", "20231231")
+        },
+        {
+            "machine_name": "7A ISO Rm 1 Fan no.1",
+            "machine_type": "Fan-DE",
+            "date_range": ("20230301", "20230430")
         }
     ]
     print("splitting dataset...")
