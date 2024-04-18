@@ -4,5 +4,3 @@
     url = s3://xs-ai-tswh-dataset
 ['remote "tswh_bearing"']
     url = s3://xs-ai-tswh-dataset/tswh/bearing
-['remote "test_balancing"']
-    url = s3://xs-ai-tswh-dataset/test/balancing
