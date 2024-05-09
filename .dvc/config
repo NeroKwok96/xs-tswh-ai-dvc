@@ -4,3 +4,5 @@
     url = s3://xs-ai-tswh-dataset
 ['remote "tswh_bearing"']
     url = s3://xs-ai-tswh-dataset/tswh/bearing
+['remote "vel_data"']
+    url = s3://xs-ai-tswh-dataset/tswh/vel_data_on
