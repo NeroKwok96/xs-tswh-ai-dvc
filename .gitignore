@@ -23,7 +23,7 @@ dvclive/
 # gE_data_off
 # gE_data_evaluate
 # dataset
-data
+# data
 # train_data
 data_off
 clustering_result
