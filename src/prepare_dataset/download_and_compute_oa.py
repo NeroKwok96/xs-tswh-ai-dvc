@@ -54,7 +54,7 @@ def download_xs_s3_dataset(category: str, site: str, ext_path: str = None):
         # Avoid downloading a few duplicate datasets
         if period_from < "2024-01-01" and period_to is None:
             continue
-        period_to = "20240429_000000" if period_to is None else sensor_history_rows[index][3].strftime("%Y%m%d_%H%M%S")
+        period_to = "20240518_000000" if period_to is None else sensor_history_rows[index][3].strftime("%Y%m%d_%H%M%S")
         
         # Base on the sensor history, create the directory within the corresponding period
         base_path = 'train_data' if not ext_path else os.path.join(ext_path, 'train_data')
