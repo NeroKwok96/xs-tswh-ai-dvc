@@ -32,14 +32,14 @@ def split_dataset(category: str, site: str, ext_path: str = None):
         data_on_df[['sensor_id', 'date', 'time']] = data_on_df['file_name'].str.split('_', expand=True).iloc[:, :3]
 
         # Create a dictionary with machine_type as the key and the relevant data as the value
-        machine_type = df_path.split('\\')[-1].split('_')[0]
+        machine_type = df_path.split('/')[-1].split('_')[0]
         on_dataset_hash = {machine_type: list(zip(data_on_df['sensor_id'], data_on_df['date'], data_on_df['time']))}
             
         # Split off, abnormal dataset
         for file_path in file_path_list:
             file_name = os.path.basename(file_path)
             sensor_id_from_file, date_from_file, time_from_file = file_name.split('_')[:3]
-            machine_name, machine_type, date_time = file_path.split('\\')[-5:-2]
+            machine_name, machine_type, date_time = file_path.split('/')[-5:-2]
             
             target_off_dir_path = os.path.join(off_dataset_path, machine_name, machine_type, date_time, sensor_id_from_file)
             target_off_csv_path = os.path.join(target_off_dir_path, file_name)

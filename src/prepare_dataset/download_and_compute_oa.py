@@ -9,10 +9,15 @@ from dotenv import load_dotenv
 import psycopg2
 from datetime import datetime
 
+env_path = os.path.join('.env')
+load_dotenv(env_path)
+
 def download_xs_s3_dataset(category: str, site: str, ext_path: str = None):
-    s3_client = boto3.client("s3")
-    env_path = os.path.join('.env')
-    load_dotenv(env_path)
+    s3_client = boto3.client(
+        "s3",
+        aws_access_key_id = os.environ["aws_access_key_id"],
+        aws_secret_access_key = os.environ["aws_secret_access_key"]
+    )
     xsdb_rds_host = os.environ['xsdb_RDS_HOST']
     xsdb_rds_port = os.environ['xsdb_RDS_PORT']
     xsdb_rds_database = os.environ['xsdb_RDS_DATABASE']
@@ -54,7 +59,7 @@ def download_xs_s3_dataset(category: str, site: str, ext_path: str = None):
         # Avoid downloading a few duplicate datasets
         if period_from < "2024-01-01" and period_to is None:
             continue
-        period_to = "20240518_000000" if period_to is None else sensor_history_rows[index][3].strftime("%Y%m%d_%H%M%S")
+        period_to = "20240604_000000" if period_to is None else sensor_history_rows[index][3].strftime("%Y%m%d_%H%M%S")
         
         # Base on the sensor history, create the directory within the corresponding period
         base_path = 'train_data' if not ext_path else os.path.join(ext_path, 'train_data')
@@ -111,6 +116,8 @@ def compute_oa(category: str, site: str, ext_path: str = None):
     file_path_list = glob.glob(os.path.join(csv_to_process_path, '*', '*', '*', '*', '*'))
     dataset_dict = {}
     
+    count = 0
+    
     for file_path in file_path_list:
         try:
             data = pd.read_csv(file_path)
@@ -123,7 +130,7 @@ def compute_oa(category: str, site: str, ext_path: str = None):
             file_name = os.path.basename(file_path)
             extracted_datetime_list = file_name.split('_')[1:3]
             extracted_datetime = '_'.join(extracted_datetime_list)
-            path_components = file_path.split('\\')
+            path_components = file_path.split('/')
             machine_name = path_components[-5]
             location_name = path_components[-4]
             sensor_id_from_file = path_components[-2]
@@ -133,7 +140,7 @@ def compute_oa(category: str, site: str, ext_path: str = None):
             data = np.square(data.to_numpy()[:, 1:])
             oa_data = np.round((np.sqrt(np.sum(data, axis=0) / 1.5)), decimals=6)
             row_list = [machine_name] + [sensor_id_from_file] + [file_name] + oa_data.tolist() + [extracted_datetime]
-
+            
             # Hash table
             if output_file_name not in dataset_dict:
                 dataset_dict[output_file_name] = []

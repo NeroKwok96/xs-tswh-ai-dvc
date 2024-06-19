@@ -44,6 +44,7 @@ def split_on_off_csv(df: pd.DataFrame, machine_type: str, cluster_result_dir: st
     print(f'{machine_type} - off_cluster_label: ', off_cluster_label)
     on_df.to_csv(os.path.join(cluster_result_dir, f'{machine_type}_data_on.csv'), index=False)
     off_df.to_csv(os.path.join(cluster_result_dir, f'{machine_type}_data_off.csv'), index=False)
+    df.to_csv(os.path.join(cluster_result_dir, f'{machine_type}_data_all.csv'), index=False)
     
 def process_sensor_data(category: str, export: bool):
     kmeans_model_dir = os.path.join('aws_lambda')

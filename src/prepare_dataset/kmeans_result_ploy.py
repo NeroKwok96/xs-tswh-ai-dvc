@@ -2,7 +2,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import plotly.express as px
 
-RHS_data = pd.read_csv('src/on_off_clustering/clustering_result/motor_data_all.csv')
+RHS_data = pd.read_csv('src/prepare_dataset/clustering_result/Motor_data_all.csv')
 
 fig = px.scatter_3d(RHS_data, x='oa_acc_x', y='oa_acc_y', z='oa_acc_z', color='cluster_label',
                     labels={'oa_acc_x': 'oa_acc_x', 'oa_acc_y': 'oa_acc_y', 'oa_acc_z': 'oa_acc_z'}, 
