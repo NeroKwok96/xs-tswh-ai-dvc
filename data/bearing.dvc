@@ -1,0 +1,6 @@
+outs:
+- md5: 44d32ac9276a62785db624f11b2c8890.dir
+  size: 2907256414
+  nfiles: 10689
+  hash: md5
+  path: bearing

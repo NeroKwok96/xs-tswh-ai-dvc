@@ -63,7 +63,7 @@ def download_xs_s3_dataset(category: str, site: str, target_period_to: str, ext_
         
         # Base on the sensor history, create the directory within the corresponding period
         base_path = 'train_data' if not ext_path else os.path.join(ext_path, 'train_data')
-        sensor_location_directory = os.path.join(base_path, site, f'{category}_data', machine_name, location_name, period_from, str(sensor_id))
+        sensor_location_directory = os.path.join(base_path, site, f'{category}_data', machine_name, location_name, str(sensor_id))
         if not os.path.exists(sensor_location_directory):
             os.makedirs(sensor_location_directory)
         
@@ -113,9 +113,8 @@ def compute_oa(category: str, site: str, ext_path: str = None):
     # Get All the local dataset
     base_path = 'train_data' if not ext_path else os.path.join(ext_path, 'train_data')
     csv_to_process_path = os.path.join(base_path, f'{site}', f'{category}_data')
-    file_path_list = glob.glob(os.path.join(csv_to_process_path, '*', '*', '*', '*', '*'))
+    file_path_list = glob.glob(os.path.join(csv_to_process_path, '*', '*', '*', '*'))
     dataset_dict = {}
-    
     for file_path in file_path_list:
         try:
             data = pd.read_csv(file_path)
@@ -128,9 +127,9 @@ def compute_oa(category: str, site: str, ext_path: str = None):
             file_name = os.path.basename(file_path)
             extracted_datetime_list = file_name.split('_')[1:3]
             extracted_datetime = '_'.join(extracted_datetime_list)
-            path_components = file_path.split('/')
-            machine_name = path_components[-5]
-            location_name = path_components[-4]
+            path_components = file_path.split('\\')
+            machine_name = path_components[-4]
+            location_name = path_components[-3]
             sensor_id_from_file = path_components[-2]
             output_file_name =(f"{machine_name}_{location_name}")
             max_freq = data['frequency (Hz)'].loc[len(data) - 1]
@@ -146,7 +145,7 @@ def compute_oa(category: str, site: str, ext_path: str = None):
                 dataset_dict[output_file_name] = []
             dataset_dict[output_file_name].append(row_list)
         except:
-            print('Empty file')
+            print(f'Empty file: {file_name}')
             
     save_to_csv(dataset_dict, category)
 

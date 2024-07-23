@@ -11,9 +11,10 @@ def split_dataset(category: str, site: str, ext_path: str = None):
     
     on_dataset_path = os.path.join(base_path, f'{site}',f'{category}_data_on')
     off_dataset_path = os.path.join(base_path, f'{site}',f'{category}_data_off')
+    evaluate_dataset_path = os.path.join(base_path, f'{site}',f'{category}_data_evaluate')
     
     # The path of all csv files of the category
-    file_path_list = glob.glob(os.path.join(csv_to_process_path, '*', '*', '*', '*', '*'))
+    file_path_list = glob.glob(os.path.join(csv_to_process_path, '*', '*', '*', '*'))
     
     # The path of the csv containing the clustering result
     clustered_df_path = glob.glob(os.path.join('src', 'prepare_dataset', 'clustering_result', '*on.csv'))
@@ -22,30 +23,34 @@ def split_dataset(category: str, site: str, ext_path: str = None):
     print("splitting dataset...")
     on_dataset = []
     off_dataset = []
+    evaluate_dataset = []
         
     for df_path in clustered_df_path:
         on_dataset_hash = {}
         data_on_df = pd.read_csv(df_path)
-        print(data_on_df.shape)
-    
+        data_on_df = data_on_df[(data_on_df['max_freq'] == 10000) & (data_on_df['max_rows'] == 6400)]
         # Split the 'file_name' into parts
         data_on_df[['sensor_id', 'date', 'time']] = data_on_df['file_name'].str.split('_', expand=True).iloc[:, :3]
+        print(data_on_df.shape)
 
         # Create a dictionary with machine_type as the key and the relevant data as the value
-        machine_type = df_path.split('/')[-1].split('_')[0]
+        machine_type = df_path.split('\\')[-1].split('_')[0]
         on_dataset_hash = {machine_type: list(zip(data_on_df['sensor_id'], data_on_df['date'], data_on_df['time']))}
             
         # Split off, abnormal dataset
         for file_path in file_path_list:
             file_name = os.path.basename(file_path)
             sensor_id_from_file, date_from_file, time_from_file = file_name.split('_')[:3]
-            machine_name, machine_type, date_time = file_path.split('/')[-5:-2]
+            machine_name, machine_type = file_path.split('\\')[-4:-2]
             
-            target_off_dir_path = os.path.join(off_dataset_path, machine_name, machine_type, date_time, sensor_id_from_file)
+            target_off_dir_path = os.path.join(off_dataset_path, machine_name, machine_type, sensor_id_from_file)
             target_off_csv_path = os.path.join(target_off_dir_path, file_name)
             
-            target_on_dir_path = os.path.join(on_dataset_path, machine_name, machine_type, date_time, sensor_id_from_file)
+            target_on_dir_path = os.path.join(on_dataset_path, machine_name, machine_type, sensor_id_from_file)
             target_on_csv_path = os.path.join(target_on_dir_path, file_name)
+            
+            target_evaluate_dir_path = os.path.join(evaluate_dataset_path, machine_name, machine_type, sensor_id_from_file)
+            target_evaluate_csv_path = os.path.join(target_evaluate_dir_path, file_name)
             
             # Off - dataset
             if machine_type in on_dataset_hash.keys() and (sensor_id_from_file, date_from_file, time_from_file) not in on_dataset_hash[machine_type]:
@@ -56,11 +61,19 @@ def split_dataset(category: str, site: str, ext_path: str = None):
                 shutil.copy(file_path, target_off_csv_path)
                 
             elif machine_type in on_dataset_hash.keys() and (sensor_id_from_file, date_from_file, time_from_file) in on_dataset_hash[machine_type]:
-                on_dataset.append(file_name)
-                os.makedirs(target_on_dir_path, exist_ok=True)
-                if os.path.exists(target_on_csv_path):
-                    continue
-                shutil.copy(file_path, target_on_csv_path)
+                datetime_str = '_'.join(file_name.split('_')[1:3])
+                if datetime_str >= '20240415_000000':
+                    evaluate_dataset.append(file_name)
+                    os.makedirs(target_evaluate_dir_path, exist_ok=True)
+                    if os.path.exists(target_evaluate_csv_path):
+                        continue
+                    shutil.copy(file_path, target_evaluate_csv_path)
+                else:
+                    on_dataset.append(file_name)
+                    os.makedirs(target_on_dir_path, exist_ok=True)
+                    if os.path.exists(target_on_csv_path):
+                        continue
+                    shutil.copy(file_path, target_on_csv_path)
 
     print(f'Train dataset: {len(on_dataset)}')
     print(f'Off dataset: {len(off_dataset)}')
